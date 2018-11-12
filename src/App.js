@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
-import TestComponent from "./components/TestComponent";
+import GridPoint from "./components/GridPoint";
 
 class App extends Component {
   state = {
-    width: 2,
-    height: 2
+    width: 10,
+    height: 10,
+    cursor: {
+      x: 4,
+      y: 4
+    }
   };
 
   componentDidMount() {
@@ -20,18 +24,29 @@ class App extends Component {
       });
   }
   renderGrid = (width, height) => {
-    const rows = [];
-    for (let x = 0; x !== width; x++) {
-      rows.push(<TestComponent x={x} key={x} />);
+    const points = [];
+    for (let x = 0; x < width; x++) {
+      for (let y = 0; y < height; y++) {
+        points.push(
+          <GridPoint
+            x={x}
+            y={y}
+            key={`${x}, ${y}`}
+            cursor={this.state.cursor}
+          />
+        );
+      }
     }
-    return rows;
+    return points;
   };
   render() {
     const { width, height } = this.state;
     return (
       <div className="App">
         <header className="App-header">
-          {this.renderGrid(width).map(index => index)}
+          <div className="grid">
+            {this.renderGrid(width, height).map(index => index)}
+          </div>
         </header>
       </div>
     );
