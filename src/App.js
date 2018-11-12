@@ -1,9 +1,14 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import axios from "axios";
+import TestComponent from "./components/TestComponent";
 
 class App extends Component {
+  state = {
+    width: 2,
+    height: 2
+  };
+
   componentDidMount() {
     axios
       .get("/healthcheck")
@@ -14,23 +19,19 @@ class App extends Component {
         console.log("error");
       });
   }
-
+  renderGrid = (width, height) => {
+    const rows = [];
+    for (let x = 0; x !== width; x++) {
+      rows.push(<TestComponent x={x} key={x} />);
+    }
+    return rows;
+  };
   render() {
+    const { width, height } = this.state;
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+          {this.renderGrid(width).map(index => index)}
         </header>
       </div>
     );
